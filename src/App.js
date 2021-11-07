@@ -4,10 +4,10 @@ import ContactForm from './components/ContactForm/ContactForm';
 import Filter from './components/Filter/Filter';
 import ContactList from './components/ContactList/ContactList';
 import useLocalStorage from './hooks/useLocalStorage';
-// import dataBaseContacts from './data/contacts.json';
+import dataBaseContacts from './data/contacts.json';
 
 function App() {
-  const [contacts, setContacts] = useLocalStorage('contacts', []);
+  const [contacts, setContacts] = useLocalStorage('contacts', dataBaseContacts);
   const [filter, setFilter] = useState('');
 
   const formSubmitHandler = contactic => {
