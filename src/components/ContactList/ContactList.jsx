@@ -2,7 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import s from './ContactList.module.css';
 
-const ContactList = (contacts, onDeleteContact) => (
+const ContactList = ({ contacts, onDeleteContact }) => (
   <div className={s.container}>
     <ul className={s.list}>
       {contacts.map(({ id, name, number }) => (

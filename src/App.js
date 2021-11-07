@@ -1,49 +1,14 @@
-import { useState, useEffect } from 'react';
+import { useState, useMemo } from 'react';
 
 import ContactForm from './components/ContactForm/ContactForm';
 import Filter from './components/Filter/Filter';
 import ContactList from './components/ContactList/ContactList';
-import dataBaseContacts from './data/contacts.json';
+import useLocalStorage from './hooks/useLocalStorage';
+// import dataBaseContacts from './data/contacts.json';
 
 function App() {
-  const [contacts, setContacts] = useState(dataBaseContacts);
+  const [contacts, setContacts] = useLocalStorage('contacts', []);
   const [filter, setFilter] = useState('');
-  // state = {
-  //   contacts: dataBaseContacts,
-  //   filter: '',
-  // };
-
-  useEffect(() => {
-    window.localStorage.setItem('contacts', JSON.stringify(contacts));
-
-    const dataContacts = localStorage.getItem('contacts');
-    const parsedContacts = JSON.parse(dataContacts);
-    setContacts(parsedContacts);
-    localStorage.setItem('contacts', JSON.stringify(contacts));
-  }, [contacts]);
-
-  // const componentDidMount =() => {
-  //   const dataContacts = localStorage.getItem('contacts');
-  //
-
-  //   if (parsedContacts) {
-  //     this.setState({ contacts: parsedContacts });
-  //   }
-  // }
-  //  componentDidUpdate(prevProps, prevState) {
-  //   if (this.state.contacts !== prevState.contacts) {
-  //     localStorage.setItem('contacts', JSON.stringify(this.state.contacts));
-  //   }
-  // }
-
-  const deleteContact = contactId => {
-    setContacts(prevState =>
-      prevState.contacts.filter(contact => contact.id !== contactId),
-    );
-    // this.setState(prewState => ({
-    //   contacts: prewState.contacts.filter(contact => contact.id !== contactId),
-    // }));
-  };
 
   const formSubmitHandler = contactic => {
     // console.log(contact);
@@ -54,23 +19,22 @@ function App() {
 
     check
       ? alert(`${contactic.name} is already in contacts`)
-      : setContacts(contacts => [contactic, ...contacts]);
+      : setContacts(contacts => [...contacts, contactic]);
   };
 
   const changeFilter = e => {
-    setFilter(e.currentTarget.value);
+    setFilter(e.target.value);
   };
 
-  const displayContacts = () => {
-    // const { contacts, filter } = this.state;
-    const normalFilter = filter.toLowerCase();
-
+  const displayContacts = useMemo(() => {
     return contacts.filter(contact =>
-      contact.name.toLowerCase().includes(normalFilter),
+      contact.name.toLowerCase().includes(filter.toLowerCase()),
     );
-  };
+  }, [contacts, filter]);
 
-  // const { filter } = this.state;
+  const deleteContact = contactId => {
+    setContacts(contacts.filter(contact => contact.id !== contactId));
+  };
 
   return (
     <div>

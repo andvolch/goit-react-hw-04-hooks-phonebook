@@ -5,12 +5,12 @@ import shortid from 'shortid';
 
 import s from './ContactForm.module.css';
 
-function ContactForm() {
+function ContactForm({ submit }) {
   const [name, setName] = useState('');
   const [number, setNumber] = useState('');
 
   const handleChange = e => {
-    const { name, value } = e.currentTarget;
+    const { name, value } = e.target;
     switch (name) {
       case 'name':
         setName(value);
@@ -22,18 +22,15 @@ function ContactForm() {
         return;
     }
   };
-  // const handleChangeName = e => {
-  //   setName(e.currentTarget.value);
-  // };
-
-  // const handleChangeNumber = e => {
-  //   setNumber(e.currentTarget.value);
-  // };
 
   const handleSubmint = e => {
     e.preventDefault();
-    // const { name, number } = this.state;
-    this.props.submit({ id: shortid(), name, number });
+    const newContact = {
+      id: shortid(),
+      name,
+      number,
+    };
+    submit(newContact);
     resetForm();
   };
 

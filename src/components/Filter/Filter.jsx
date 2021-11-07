@@ -7,7 +7,7 @@ const Filter = ({ value, change }) => {
     <div className={s.container}>
       <h3>Finde contacts by name</h3>
       <label>
-        <input type="text" value={value} onChange={change} />
+        <input type="text" name="filter" value={value} onChange={change} />
       </label>
     </div>
   );
